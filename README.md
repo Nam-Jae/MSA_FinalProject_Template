@@ -14,20 +14,24 @@
 
 # 구현:
 
-분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트와 파이선으로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
+각 BC별로 대변되는 마이크로 서비스들은 스프링부트로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다
+(각자의 포트넘버는 emergencyCall:8082, dispatch:8083, hospital:8084, gateway:8088, kafka:9092 이다)
 
 ```
-cd app
+cd emergencyCall
 mvn spring-boot:run
 
-cd pay
+cd dispatch
 mvn spring-boot:run 
 
-cd store
+cd hospital
 mvn spring-boot:run  
 
-cd customer
-python policy-handler.py 
+cd gateway
+mvn spring-boot:run
+
+cd kafka
+docker-compose up
 ```
 
 ## DDD 의 적용
