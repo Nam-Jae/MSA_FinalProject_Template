@@ -36,69 +36,90 @@ docker-compose up
 
 ## DDD 의 적용
 
-- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 pay 마이크로 서비스). 이때 가능한 현업에서 사용하는 언어 (유비쿼터스 랭귀지)를 그대로 사용하려고 노력했다. 하지만, 일부 구현에 있어서 영문이 아닌 경우는 실행이 불가능한 경우가 있기 때문에 계속 사용할 방법은 아닌것 같다. (Maven pom.xml, Kafka의 topic id, FeignClient 의 서비스 id 등은 한글로 식별자를 사용하는 경우 오류가 발생하는 것을 확인하였다)
+- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 emergencyCall 마이크로 서비스).
 
 ```
-package fooddelivery;
+package ecall.domain;
 
-import javax.persistence.*;
-import org.springframework.beans.BeanUtils;
+import ecall.EmergencyCallApplication;
+import ecall.domain.CallCanceled;
+import ecall.domain.Called;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import javax.persistence.*;
+import lombok.Data;
 
 @Entity
-@Table(name="결제이력_table")
-public class 결제이력 {
+@Table(name = "Call_table")
+@Data
+
+public class Call {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String orderId;
-    private Double 금액;
 
-    public Long getId() {
-        return id;
-    }
+    private String carId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getOrderId() {
-        return orderId;
-    }
+    private String driverName;
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-    public Double get금액() {
-        return 금액;
+    private String position;
+
+    private String accidentTime;
+
+    @PostPersist
+    public void onPostPersist() {
+        Called called = new Called(this);
+        called.publishAfterCommit();
+        
     }
 
-    public void set금액(Double 금액) {
-        this.금액 = 금액;
+    @PostRemove
+    public void onPostUpdate(){
+        CallCanceled callCanceled = new CallCanceled(this);
+        callCanceled.publishAfterCommit();
     }
 
+    @PreRemove
+    public void onPreRemove() {}
+
+    public static CallRepository repository() {
+        CallRepository callRepository = EmergencyCallApplication.applicationContext.getBean(
+            CallRepository.class
+        );
+        return callRepository;
+    }
 }
+
 
 ```
 - Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 다양한 데이터소스 유형 (RDB or NoSQL) 에 대한 별도의 처리가 없도록 데이터 접근 어댑터를 자동 생성하기 위하여 Spring Data REST 의 RestRepository 를 적용하였다
 ```
-package fooddelivery;
+package ecall.domain;
 
+import ecall.domain.*;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-public interface 결제이력Repository extends PagingAndSortingRepository<결제이력, Long>{
-}
+@RepositoryRestResource(collectionResourceRel = "calls", path = "calls")
+public interface CallRepository
+    extends PagingAndSortingRepository<Call, Long> {}
+
 ```
 - 적용 후 REST API 의 테스트
 ```
-# app 서비스의 주문처리
-http localhost:8081/orders item="통닭"
+# emergencyCall 서비스의 Call처리
+http POST localhost:8082/calls carId="1" driverName="N" position="Seoul" accidentTime="now"
 
-# store 서비스의 배달처리
-http localhost:8083/주문처리s orderId=1
+# Call 상태 확인
+http localhost:8082/calls/1
 
-# 주문 상태 확인
-http localhost:8081/orders/1
+# emergencyCall 서비스의 Call취소처리
+http DELETE localhost:8082/calls/1
+
+# Call 취소상태 확인
+http localhost:8082/calls/1
 
 ```
 
