@@ -110,16 +110,21 @@ public interface CallRepository
 - 적용 후 REST API 의 테스트
 ```
 # emergencyCall 서비스의 Call처리
-http POST localhost:8082/calls carId="1" driverName="N" position="Seoul" accidentTime="now"
+http POST localhost:8082/calls carId="1" driverName="NJ" position="Seoul" accidentTime="now"
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/afdbdde6-ae1e-41c3-ba2e-0e31521bae58)
 
 # Call 상태 확인
 http localhost:8082/calls/1
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/32c4608b-dc31-4103-bfff-2d8d5fcd0da0)
+
 
 # emergencyCall 서비스의 Call취소처리
 http DELETE localhost:8082/calls/1
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/12a43770-c602-4cda-9ca2-148e017846cd)
 
 # Call 취소상태 확인
 http localhost:8082/calls/1
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/0824ff81-2b14-43d4-99d7-d41815d2b49a)
 
 ```
 
