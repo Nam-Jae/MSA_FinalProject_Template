@@ -152,10 +152,14 @@ http localhost:8082/reservations/1
 
 
 # 기능테스트
+```
 주차장ID:1 주차장은 5개의 자리가 남아있다
+```
 ![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/eaa9981e-4385-44e1-98d1-04fc7c7f92e5)
 
+```
 주차장ID:2 주차장은 0개의 자리가 남아있다
+```
 ![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/f008f926-d4b0-42d0-9e9f-a3c98884def3)
 
 
