@@ -124,28 +124,32 @@ public interface ReservationRepository
 ```
 - 적용 후 REST API 의 테스트
 ```
-# emergencyCall 서비스의 Call처리
-http POST localhost:8082/calls carId="1" driverName="NJ" position="Seoul" accidentTime="now"
+# reservation 서비스의 Reserve 처리
+http POST localhost:8082/reservations parkingId="1" customerId="CUST1" carNumber="10더8612" amount="5000" status="Green" 
 ```
-![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/afdbdde6-ae1e-41c3-ba2e-0e31521bae58)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/47f3fca6-0f38-4402-9b8a-727eba9a0463)
+
 
 ```
-# Call 상태 확인
-http localhost:8082/calls/1
+# Reserve 상태 확인
+http localhost:8082/reservations/1
 ```
-![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/32c4608b-dc31-4103-bfff-2d8d5fcd0da0)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/fb50fb4f-c227-489b-acaa-b882923b7f66)
+
 
 ```
-# emergencyCall 서비스의 Call취소처리
-http DELETE localhost:8082/calls/1
+# reservation 서비스의 Cancel 처리
+http DELETE localhost:8082/reservations/1
 ```
-![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/12a43770-c602-4cda-9ca2-148e017846cd)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/149b4d31-a3ce-4ea1-a44d-263d9867602b)
+
 
 ```
 # Call 취소상태 확인
-http localhost:8082/calls/1
+http localhost:8082/reservations/1
 ```
-![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/0824ff81-2b14-43d4-99d7-d41815d2b49a)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/99bda8b0-2ee4-46c9-9c91-83eac22424de)
+
 
 ```
 
