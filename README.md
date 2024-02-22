@@ -420,9 +420,11 @@ spec:
             failureThreshold: 5
 ```
 - readinessProbe 주석 처리 후 배포 진행 시 결과
+  
 ![Screenshot 2024-02-23 at 3 38 38 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/45d6385d-efe7-42db-a1ae-eb4ec8142ebd)
 
 - readinessProbe 주석 해제 후 배포 진행 시 결과
+  
 ![Screenshot 2024-02-23 at 3 33 34 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/35a03d6c-98ad-4fd0-8aa7-425e537bec76)
 
 
