@@ -171,7 +171,34 @@ http localhost:8082/reservations/1
 ```
 ![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/75db1e18-54cd-4531-8e70-7329166e6741)
 
+```
+주차장ID:1 주차장을 예약 하자.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/233eb81f-edae-43bd-a8e7-d20bd607b277)
 
+```
+주차장ID:1 주차장의 남은 자리를 조회하면 예약으로 인해 남은 자리가 4가 된 것을 확인할 수 있다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/a94521e4-c772-4e9a-b5fa-998436100c70)
+
+```
+예약됨 이벤트가 발행되고 이어 쿠폰 대상자로 선정되어 쿠폰이 발행됨 이벤트가 발생하였다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/aaf7defa-d5ae-40c9-8e6a-4b1996af93bc)
+
+```
+주차장ID:1 주차장의 예약을 취소해보자.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/3972597d-51ec-487a-95c4-c032c38bd0f9)
+
+```
+주차장ID:1 주차장의 예약 취소로 남은 자리가 다시 5가 된 것을 확인할 수 있다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/7021647f-432a-4d0c-8f29-db61f2574768)
+
+```
+취소됨 이벤트가 발행되고 이어 쿠폰 대상자에서 제외되며 쿠폰 회수됨 이벤트가 발생하였다.
+```
 
 
 
