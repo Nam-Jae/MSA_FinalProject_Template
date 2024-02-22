@@ -373,6 +373,57 @@ spec:
 ![Screenshot 2024-02-23 at 2 59 33 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/4fc6d2e3-80fa-4cb3-948d-07453b6002de)
 
 
+### 무중단배포
+- Reservation 서비스 이미지의 새로운 버전을 반영하여 배포를 진행한다.
+- 배포 시 seige로 부하를 걸고 배포 완료 시 결과로 무중단 여부를 확인한다.
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservation
+  labels:
+    app: reservation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservation
+  template:
+    metadata:
+      labels:
+        app: reservation
+    spec:
+      containers:
+        - name: reservation
+          image: iure07/reservation:canary
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "200m"            
+          readinessProbe:
+            httpGet:
+              path: '/reservations'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+```
+- readinessProbe 주석 처리 후 배포 진행 시 결과
+![Screenshot 2024-02-23 at 3 38 38 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/45d6385d-efe7-42db-a1ae-eb4ec8142ebd)
+
+- readinessProbe 주석 해제 후 배포 진행 시 결과
+![Screenshot 2024-02-23 at 3 33 34 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/35a03d6c-98ad-4fd0-8aa7-425e537bec76)
 
 
 --------------------------
