@@ -254,6 +254,9 @@ helm repo update
 helm install my-kafka bitnami/kafka --version 23.0.5
 ```
 
+모든 서비스를 컨테이너에 배포하였다.
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/7ec78aba-dac2-450b-9ef9-2f244d26f2e5)
+
 
 ```
 로컬 테스트로 진행한 내용을 동일하게 클라우드에 배포 후 진행한다.
