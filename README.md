@@ -319,7 +319,58 @@ kubectl get deploy pay -w
 ![Screenshot 2024-02-23 at 2 39 32 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/8ef3a495-d457-4199-9d48-673456ba6f73)
 
 
+### 셀프힐링
+- Reservation 서비스가 담긴 컨테이너에 장애 발생 시, 자동으로 감지하여 장애를 복구하도록 한다.
 
+```
+aapiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservation-liveness
+  labels:
+    app: reservation-liveness
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservation-liveness
+  template:
+    metadata:
+      labels:
+        app: reservation-liveness
+    spec:
+      containers:
+        - name: reservation-liveness
+          image: iure07/reservation:latest
+          args:
+          - /bin/sh
+          - -c
+          - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "200m"            
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            exec:
+              command:
+              - cat
+              - /tmp/healthy
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+```
+![Screenshot 2024-02-23 at 2 59 33 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/4fc6d2e3-80fa-4cb3-948d-07453b6002de)
 
 
 
