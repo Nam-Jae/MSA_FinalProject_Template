@@ -213,6 +213,22 @@ http localhost:8082/reservations/1
 ![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/7840ab3d-ca1a-4815-a022-c5ca696f698a)
 
 
+```
+ControlCenter 에서는 주차장 정보와 예약현황을 알 수 있다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/34908271-8afe-4ba1-b35e-c22da0edf421)
+
+```
+Parking 서비스를 다운시키고
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/c3f05254-31e0-41aa-85c6-767640478fb7)
+
+```
+ControlCenter 정보를 조회하여도 ControlCenter 서비스는 정상적으로 동작함을 알 수 있다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/aaa54b3a-edcb-4c4e-8b2e-e2ca58774020)
+
+
 
 
 # 운영
