@@ -201,6 +201,18 @@ http localhost:8082/reservations/1
 ```
 ![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/45e1f840-f605-4cd0-9aac-74b65c0106ac)
 
+```
+단일 진입점 추가 후 동일한 시나리오 수행 결과
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/4775d625-4246-4b67-a714-51042c04385e)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/7ef44c96-cb65-4255-8825-1e1541d08ccd)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/749a1750-88ab-434a-956c-de5ae5d57201)
+
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/6e7e434b-8444-4bd9-aef3-a8ec40ece2ad)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/64f6a6c7-f8ec-44ec-a974-8679d2f51687)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/7840ab3d-ca1a-4815-a022-c5ca696f698a)
+
+
 
 
 # 운영
