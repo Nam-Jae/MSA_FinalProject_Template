@@ -316,10 +316,7 @@ siege -c50 -t40S -r10 --content-type "application/json" 'ac96fd853fcc74f59a7d214
 kubectl get deploy pay -w
 ```
 - 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-```
 ![Screenshot 2024-02-23 at 2 39 32 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/8ef3a495-d457-4199-9d48-673456ba6f73)
-
-```
 
 
 
