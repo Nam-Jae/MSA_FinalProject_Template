@@ -2,29 +2,33 @@
 # 서비스 시나리오
 
 기능적 요구사항
-1. 스마트카가 사고 발생 인지 시 구급차를 호출한다
-1. 구급차 출동 확인 시 병원의 응급실을 예약한다
-1. 운전자는 구급차 호출을 취소할 수 있다
-1. 구급차 호출 취소 시 응급실 예약도 취소된다
+1. 사용자는 주차 자리가 있는 주차장을 예약한다.
+2. 사용자는 예약을 취소할 수 있다.
+3. 주차장이 예약되면 해당 주차장의 자리는 감소한다.
+4. 주차장 예약이 취소되면 해당 주차장의 자리는 증가한다.
+5. 예약한 사람은 할인쿠폰 발행 대상자가 된다.
+6. 예약을 취소하면 할인쿠폰 발행 대상자에서 제외된다.
+7. 통합관제실에서 주차장 정보 및 예약현황을 볼 수 있다.
 
 # 분석/설계
 
-![이벤트스토밍](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/f159d540-a4e9-4a09-b447-3ce487315f46)
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/69c9fd3a-8fcf-4a6b-97e3-99fe6eac02bc)
+
 
 
 # 구현:
 
 각 BC별로 대변되는 마이크로 서비스들은 스프링부트로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다
-(각자의 포트넘버는 emergencyCall:8082, dispatch:8083, hospital:8084, gateway:8088, kafka:9092 이다)
+(각자의 포트넘버는 Reservation:8082, parking:8083, coupon:8084, gateway:8088, kafka:9092 이다)
 
 ```
-cd emergencyCall
+cd reservation
 mvn spring-boot:run
 
-cd dispatch
+cd parking
 mvn spring-boot:run 
 
-cd hospital
+cd coupon
 mvn spring-boot:run  
 
 cd gateway
@@ -36,14 +40,14 @@ docker-compose up
 
 ## DDD 의 적용
 
-- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 emergencyCall 마이크로 서비스).
+- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 reservation 마이크로 서비스).
 
 ```
 package ecall.domain;
 
-import ecall.EmergencyCallApplication;
-import ecall.domain.CallCanceled;
-import ecall.domain.Called;
+import ecall.ReservationApplication;
+import ecall.domain.Canceled;
+import ecall.domain.Reserved;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -51,47 +55,55 @@ import javax.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "Call_table")
+@Table(name = "Reservation_table")
 @Data
-
-public class Call {
+public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String carId;
+    private String parkingId;
 
-    private String driverName;
+    private String customerId;
 
-    private String position;
+    private String carNumber;
 
-    private String accidentTime;
+    private Double amount;
+
+    private String status;
 
     @PostPersist
     public void onPostPersist() {
-        Called called = new Called(this);
-        called.publishAfterCommit();
-        
+        Reserved reserved = new Reserved(this);
+        reserved.publishAfterCommit();
     }
 
-    @PostRemove
-    public void onPostUpdate(){
-        CallCanceled callCanceled = new CallCanceled(this);
-        callCanceled.publishAfterCommit();
-    }
+    @PrePersist
+    public void onPrePersist(){
+        ecall.external.Parking parking = 
+            ReservationApplication.applicationContext.getBean(ecall.external.ParkingService.class)
+            .getParking(Long.valueOf(getParkingId()));
 
+        if(parking.getParkingSpot() < 1){
+            throw new RuntimeException("No more Space");
+        }
+
+    }
+    
     @PreRemove
-    public void onPreRemove() {}
+    public void onPreRemove() {
+        Canceled canceled = new Canceled(this);
+        canceled.publishAfterCommit();
+    }
 
-    public static CallRepository repository() {
-        CallRepository callRepository = EmergencyCallApplication.applicationContext.getBean(
-            CallRepository.class
+    public static ReservationRepository repository() {
+        ReservationRepository reservationRepository = ReservationApplication.applicationContext.getBean(
+            ReservationRepository.class
         );
-        return callRepository;
+        return reservationRepository;
     }
 }
-
 
 ```
 - Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 다양한 데이터소스 유형 (RDB or NoSQL) 에 대한 별도의 처리가 없도록 데이터 접근 어댑터를 자동 생성하기 위하여 Spring Data REST 의 RestRepository 를 적용하였다
@@ -102,9 +114,12 @@ import ecall.domain.*;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@RepositoryRestResource(collectionResourceRel = "calls", path = "calls")
-public interface CallRepository
-    extends PagingAndSortingRepository<Call, Long> {}
+@RepositoryRestResource(
+    collectionResourceRel = "reservations",
+    path = "reservations"
+)
+public interface ReservationRepository
+    extends PagingAndSortingRepository<Reservation, Long> {}
 
 ```
 - 적용 후 REST API 의 테스트
