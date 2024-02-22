@@ -199,6 +199,7 @@ http localhost:8082/reservations/1
 ```
 취소됨 이벤트가 발행되고 이어 쿠폰 대상자에서 제외되며 쿠폰 회수됨 이벤트가 발생하였다.
 ```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/45e1f840-f605-4cd0-9aac-74b65c0106ac)
 
 
 
