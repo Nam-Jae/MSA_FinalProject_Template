@@ -233,6 +233,62 @@ ControlCenter 정보를 조회하여도 ControlCenter 서비스는 정상적으�
 
 # 운영
 
+## Container 운영(클라우드 배포)
+
+클라우드 환경에 배포하기 위한 사전 작업 (ex. reservation서비스)
+```
+cd reservation
+mvn package -B -Dmaven.test.skip=true
+
+docker build -t [dockerhub ID]/reservation:latest .     
+docker push [dockerhub ID]/reservation:latest
+
+kubectl apply -f kubernetes/deployment.yaml
+kubectl apply -f kubernetes/service.yaml
+```
+
+Kafka는 helm으로 설치하였다.
+```
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm install my-kafka bitnami/kafka --version 23.0.5
+```
+
+
+```
+로컬 테스트로 진행한 내용을 동일하게 클라우드에 배포 후 진행한다.
+```
+```
+주차장ID:1 주차장을 예약 하자.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/cf2fb98c-a7e9-49c9-86b3-e252ac06ba22)
+
+```
+주차장ID:1 주차장 예약으로 인해 주차 자리는 1 감소하였다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/8c80eb32-8e61-4c32-b1d8-ca6ac82e77b6)
+
+```
+주차장ID:1 주차장 예약취소
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/ecebb40a-4094-4259-b8ed-97fa13bf77e1)
+
+```
+주차장ID:1 주차 자리는 반환되었다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/f01b797b-d993-4f79-a490-61374e690d7e)
+
+```
+예약->취소로 인해 예약됨/쿠폰발행됨/취소됨/쿠폰회수됨 이벤트가 발생한 것을 볼 수 있다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/0c85ebce-0db1-4b17-938e-a2b011b44b48)
+
+
+
+
+
+
+
 ## CI/CD 설정
 
 
