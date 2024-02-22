@@ -430,3 +430,64 @@ spec:
 
 --------------------------
 --------------------------
+### 컨테이너로부터 환경분리 ConfigMap
+
+ConfigMap 생성 후
+```
+kubectl create configmap my-config --from-literal=class=MSA --from-literal=Lab=ConfigMap
+```
+
+배포 YAML 파일을 수정하였다.
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: reservation
+  labels: 
+    app: reservation
+spec: 
+  selector: 
+    matchLabels: 
+      app: reservation
+  replicas: 1
+  template: 
+    metadata: 
+      labels: 
+        app: reservation
+    spec: 
+      containers: 
+        - name: cm-file
+          image: iure07/reservation:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: RESERVATION_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-dev
+                  key: RESERVATION_LOG_LEVEL
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+```
+![Screenshot 2024-02-23 at 5 33 26 AM](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/7c72d664-f303-4dc9-8c7f-488d388d2352)
+configMap으로부터 환경변수를 받아 pod가 등록되는 것을 볼 수 있다.
+
+
+
