@@ -162,7 +162,14 @@ http localhost:8082/reservations/1
 ```
 ![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/f008f926-d4b0-42d0-9e9f-a3c98884def3)
 
-
+```
+주차장ID:2 주차장은 자리가 없어 예약이 불가하지만 강제로 예약해보도록 하겠다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/6b47021e-921e-43ef-a87f-12d63f211e84)
+```
+더 이상 자리가 없어 예약이 불가하다.
+```
+![image](https://github.com/Nam-Jae/MSA_FinalProject_Template/assets/34273834/75db1e18-54cd-4531-8e70-7329166e6741)
 
 
 
