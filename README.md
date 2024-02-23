@@ -490,4 +490,7 @@ spec:
 configMap으로부터 환경변수를 받아 pod가 등록되는 것을 볼 수 있다.
 
 
+## 진행중
+istio pod , yaml 확인중
+codebuild , 소스 못가지고 와서 yaml 확인중
 
